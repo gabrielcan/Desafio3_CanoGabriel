@@ -1,71 +1,81 @@
 /* Creamos las Clases a utilizar */
-class Producto{
-    constructor(nombre,precio,cant){
-        this.nombre=nombre.toUpperCase(); //aplicamos la funcion tuUppercase() para que el texto ingreso este en mayusculas
-        this.valorUnidad=parseFloat(precio);
-        this.cantidad=cant===0 || cant==="" ?1:parseInt(cant)
-}
+class Producto {
+  constructor(nombre, precio, cant) {
+    this.nombre = nombre.toUpperCase(); //aplicamos la funcion tuUppercase() para que el texto ingreso este en mayusculas
+    this.valorUnidad = parseFloat(precio);
+    this.cantidad = cant === 0 || cant === "" ? 1 : parseInt(cant); //dejamos que por defecto ponga 1 si no obtenemos un resultado
+  }
 }
 
-class Calculos{
-    constructor(totalValores){
-    this.valorEvaluar=totalValores;
-    this.descuento= this.valorEvaluar<=5000?false:true;
-    this.valorTotalDescuento=0;
-    this.porcentajeDescuento=0+"%";
-    this.totalCobrar=0
-    this.iva=1.21;
-    }
-    valorDescuento(){
-if (this.descuento===true){
-    if (this.valorEvaluar > 5000 && this.valorEvaluar < 8000) {
-        this.valorTotalDescuento=this.valorEvaluar*0.05;
-        this.porcentajeDescuento=5+"%"
+class Calculos {
+  constructor(totalValores) {
+    this.valorEvaluar = totalValores;
+    this.descuento = this.valorEvaluar <= 5000 ? false : true; //indicamos si el valor es menor o igual a 5000 ponemos false, para no aplicarle descuentos.
+    this.valorTotalDescuento = 0;
+    this.porcentajeDescuento = 0 + "%";
+    this.totalCobrar = 0;
+    this.iva = 1.21; //dejamos 1.21 para que se incremente en un 21% el valor  al multiplicarlo por el valor total.
+  }
+  valorDescuento() {
+    //la funcion permite obtener el descuento que corresponde aplicar al monto total
+    if (this.descuento === true) {
+      if (this.valorEvaluar > 5000 && this.valorEvaluar < 8000) {
+        this.valorTotalDescuento = this.valorEvaluar * 0.05; //sacamos el 5% del valor total para poder usarlo para el calculo del total a pagar y tambien mostrarlo en el detalle del pago.
+        this.porcentajeDescuento = 5 + "%"; //permite poder mostrar el % a descontar, lo concatenamos con un string para que sea mas visual el resultado
       } else {
-        this.valorTotalDescuento=this.valorEvaluar*0.1;
-        this.porcentajeDescuento=10+"%"
-      } 
-} 
+        this.valorTotalDescuento = this.valorEvaluar * 0.1;
+        this.porcentajeDescuento = 10 + "%";
+      }
     }
+  }
 
-facturacion(){
-    this.totalCobrar=this.iva*(this.valorEvaluar-this.valorTotalDescuento);
-}
+  facturacion() {
+    //creamos la funcion para que retorne el valor que terminaremos cobrando por el total de productos ingresados
+    this.totalCobrar = this.iva * (this.valorEvaluar - this.valorTotalDescuento);
+  }
 }
 
 /* inicializamos las variables a utilizar */
-const productos=[];
-let acumulaValores=0
-let index=0;
-let continuar=1;
+const productos = [];
+let acumulaValores = 0;
+let index = 0;
+let continuar = 1;
 let calculosProd;
-let nombreProducto=prompt("Ingrese el nombre del Producto a cobrar");
-let valorProducto=prompt("Ingrese el Precio del producto");
-let cantidadProduct=prompt("Cantidad de productos")
+let cantprod = 0;
+let nombreProducto = prompt("Ingrese el nombre del Producto a cobrar");
+let valorProducto = prompt("Ingrese el Precio del producto");
+let cantidadProduct = prompt("Indiquemos la cantidad a cargar");
 
-while (continuar === 1){ // generamos el while para cargar los productos, permitiendo que el usuario ponga el limite de productos a cargar al asignarle el valor 1 a la varibale "continuar"
+while (continuar === 1) {
+  // generamos el while para cargar los productos, permitiendo que el usuario ponga el limite de productos a cargar al asignarle el valor 1 a la varibale "continuar"
 
-productos.push(new Producto(nombreProducto,valorProducto,cantidadProduct)) //agregamos los objetos en el array "productos"
+  productos.push(new Producto(nombreProducto, valorProducto, cantidadProduct)); //agregamos los objetos en el array "productos"
 
-continuar=parseInt(prompt("Presione 1 si desea continuar cargando productos de lo contrario eliga otro valor"));
+  continuar = parseInt(
+    prompt(
+      "Presione 1 si desea continuar cargando productos de lo contrario eliga otro valor"
+    )
+  ); //solicitamos darle valor a la variable "continuar" para poder darle continuidad al while
 
-if(continuar===1){
-index++;
-nombreProducto=prompt("Ingrese el nombre del Producto a cobrar");
-valorProducto=prompt("Ingrese el Precio del producto");
-cantidadProduct=prompt("Cantidad de productos")
+  if (continuar === 1) {
+    index++;
+    nombreProducto = prompt("Ingrese el nombre del Producto a cobrar");
+    valorProducto = prompt("Ingrese el Precio del producto");
+    cantidadProduct = prompt("Cantidad de productos");
+  }
 }
 
-}
 
-let cantprod=0;
-for (const aux of productos){ // recorremos el array de objetos "productos" para acumular el valor de los productos cargados
-    cantprod=aux.cantidad*aux.valorUnidad
-    acumulaValores=acumulaValores+cantprod;
+for (const aux of productos) {
+  // recorremos el array de objetos "productos" para acumular el valor de los productos cargados
+  cantprod = aux.cantidad * aux.valorUnidad;
+  acumulaValores = acumulaValores + cantprod;
+  console.log(`Nombre de Producto: ${aux.nombre}\n valor por unidad: $${aux.valorUnidad}\n Cantidad cargada: ${aux.cantidad}\n Total a cobrar: ${cantprod}\n`) //Mostramos con el "console.log" cada uno de los productos cargados con sus valores para poder controlar con el Alert que muestra al final con los valores totales a cobrar
 }
-calculosProd=new Calculos(acumulaValores) // genero una instancia de la clase Calculos
-calculosProd.valorDescuento();
- //llamamos a la funcion de la clase calculos para que gener el valor del descuento que tenemo que aplicar en el valor total a cobrar
-calculosProd.facturacion();
+calculosProd = new Calculos(acumulaValores); // genero una instancia de la clase Calculos
+calculosProd.valorDescuento();//Llamamos a la funcion "valorDescuento" de la clase calculos para que gener el valor del descuento que tenemo que aplicar en el valor total a cobrar
+calculosProd.facturacion(); // Ejecutamos la funcion "facturacion" de la clase calculos para poder realizar los calculos que permitan saber el total a pagar.
 
-alert(`DETALLES DE PAGO\n Subtotal: $${calculosProd.valorEvaluar} \n ${calculosProd.porcentajeDescuento} Descuento: $${calculosProd.valorTotalDescuento}\n Total a Pagar (mas IVA 21%): $${calculosProd.totalCobrar}`)
+alert(
+  `DETALLES DEL PAGO\n Subtotal: $${calculosProd.valorEvaluar} \n ${calculosProd.porcentajeDescuento} Descuento: $${calculosProd.valorTotalDescuento}\n Total a Pagar (mas IVA 21%): $${calculosProd.totalCobrar}`
+); //mostramos el detalle del valor total sin IVA, el descuento aplicado y el total a pagar con IVA.
