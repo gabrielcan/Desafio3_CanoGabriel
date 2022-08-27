@@ -1,4 +1,14 @@
 /* Creamos las Clases a utilizar */
+
+/* 
+Genere un programa que esta cargando productos, ingresando el nombre del producto, precio y la cantidad que esta llevando de ese producto.
+        La carga se repite hasta que el usuario elige detenerse. 
+        Luego al terminar la carga de todos los productos,si corresponde al sumar los valores totales de cada producto sin aplicar el IVA, pueden obtener un descuento:
+        _Menor o igual 5000 - SIN DESCUENTO
+        _Mayor a 5000 y menor o igual a 8000 - DESCUENTO DE 5%.
+        _Mayor a 8000 - DESCUENTO 10%.
+        Mostramos en un Alert el detalle del total a pagar, realizando el descuento y sumando al total el impuesto al IVA(21%).
+*/
 class Producto {
   constructor(nombre, precio, cant) {
     this.nombre = nombre.toUpperCase(); //aplicamos la funcion tuUppercase() para que el texto ingreso este en mayusculas
